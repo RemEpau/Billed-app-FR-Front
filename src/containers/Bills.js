@@ -58,7 +58,7 @@ export default class {
                             console.log(e, "for", doc);
                             return {
                                 ...doc,
-                                date: formatDate(doc.date),
+                                date: doc.date,
                                 status: formatStatus(doc.status),
                             };
                         }
