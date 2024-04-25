@@ -167,7 +167,6 @@ export default class {
 
         // Add click events on new bills
         bills.forEach((bill) => {
-            console.log(`#open-bill${bill.id}`);
             $(`#open-bill${bill.id}`).click((e) =>
                 this.handleEditTicket(e, bill, bills)
             );
