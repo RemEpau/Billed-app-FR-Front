@@ -19,44 +19,37 @@ export default class NewBill {
     }
     handleChangeFile = (e) => {
         e.preventDefault();
-        const fileInput = this.document.querySelector(
-            `input[data-testid="file"]`
-        );
-        const file = fileInput.files[0];
+        const file = this.document.querySelector(`input[data-testid="file"]`)
+            .files[0];
+
+        if (file.type !== "image/png" && file.type !== "image/jpeg") {
+            this.document.querySelector(`input[data-testid="file"]`).value =
+                null;
+
+            return alert("Vous devez choisir un fichier png, jpg ou jpeg");
+        }
+
         const filePath = e.target.value.split(/\\/g);
         const fileName = filePath[filePath.length - 1];
+        const formData = new FormData();
+        const email = JSON.parse(localStorage.getItem("user")).email;
+        formData.append("file", file);
+        formData.append("email", email);
 
-        //Get the file extension
-        const fileExtension = fileName.split(".").pop().toLowerCase();
-        console.log(fileExtension);
-
-        if (["jpg", "jpeg", "png"].includes(fileExtension)) {
-            const formData = new FormData();
-            const email = JSON.parse(localStorage.getItem("user")).email;
-            formData.append("file", file);
-            formData.append("email", email);
-
-            this.store
-                .bills()
-                .create({
-                    data: formData,
-                    headers: {
-                        noContentType: true,
-                    },
-                })
-                .then(({ fileUrl, key }) => {
-                    console.log(fileUrl);
-                    this.billId = key;
-                    this.fileUrl = fileUrl;
-                    this.fileName = fileName;
-                })
-                .catch((error) => console.error(error));
-        } else {
-            alert(
-                "Vous pouvez seulement uploader des fichiers jpg, jpeg et png"
-            );
-            fileInput.value = "";
-        }
+        this.store
+            .bills()
+            .create({
+                data: formData,
+                headers: {
+                    noContentType: true,
+                },
+            })
+            .then(({ fileUrl, key }) => {
+                this.billId = key;
+                this.fileUrl = fileUrl;
+                this.fileName = fileName;
+            })
+            .catch((error) => console.error(error));
     };
     handleSubmit = (e) => {
         e.preventDefault();
