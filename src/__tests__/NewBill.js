@@ -68,7 +68,7 @@ describe("Given I am connected as an employee", () => {
             });
         });
 
-        describe("When the user upload a file that is png, jpg or jpeg", () => {
+        describe("When the user upload a file that is png", () => {
             test("Then the file field is OK", async () => {
                 const fileInput = screen.getByTestId("file");
                 const onNavigate = (pathname) => {
@@ -89,6 +89,48 @@ describe("Given I am connected as an employee", () => {
                     new File(["test"], "test.png", { type: "image/png" })
                 );
                 expect(fileInput.files).not.toBeNull();
+            });
+        });
+        describe("When the user upload a file that is jpg or jpeg", () => {
+            test("Then the file field is OK", async () => {
+                const fileInput = screen.getByTestId("file");
+                const onNavigate = (pathname) => {
+                    document.body.innerHTML = ROUTES({ pathname });
+                };
+                const newBillContainer = new NewBill({
+                    document,
+                    onNavigate,
+                    store: mockStore,
+                    localStorage: window.localStorage,
+                });
+                const handleChangeFile = jest.fn(
+                    () => newBillContainer.handleChangeFile
+                );
+                fileInput.addEventListener("change", handleChangeFile);
+                userEvent.upload(
+                    fileInput,
+                    new File(["test"], "test.jpg", { type: "image/jpg" })
+                );
+                expect(fileInput.files).not.toBeNull();
+            });
+        });
+
+        describe("When the user upload a file that is not png, jpg or jpeg", () => {
+            test("Then the file field is not OK", async () => {
+                const fileInput = screen.getByTestId("file");
+                const onNavigate = (pathname) => {
+                    document.body.innerHTML = ROUTES({ pathname });
+                };
+                const newBillContainer = new NewBill({
+                    document,
+                    onNavigate,
+                    store: mockStore,
+                    localStorage: window.localStorage,
+                });
+                const handleChangeFile = jest.fn(
+                    () => newBillContainer.handleChangeFile
+                );
+                expect(fileInput.files).toHaveLength(0);
             });
         });
 
