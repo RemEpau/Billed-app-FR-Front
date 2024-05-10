@@ -88,7 +88,7 @@ describe("Given I am connected as an employee", () => {
                     fileInput,
                     new File(["test"], "test.png", { type: "image/png" })
                 );
-                expect(fileInput.files).not.toBeNull();
+                expect(fileInput.files.length).toBe(1);
             });
         });
         describe("When the user upload a file that is jpg or jpeg", () => {
@@ -111,7 +111,7 @@ describe("Given I am connected as an employee", () => {
                     fileInput,
                     new File(["test"], "test.jpg", { type: "image/jpg" })
                 );
-                expect(fileInput.files).not.toBeNull();
+                expect(fileInput.files.length).toBe(1);
             });
         });
 
@@ -130,7 +130,7 @@ describe("Given I am connected as an employee", () => {
                 const handleChangeFile = jest.fn(
                     () => newBillContainer.handleChangeFile
                 );
-                expect(fileInput.files).toHaveLength(0);
+                expect(fileInput.files.length).toBe(0);
             });
         });
 

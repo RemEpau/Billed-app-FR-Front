@@ -10,7 +10,9 @@ const row = (bill) => {
     <tr>
       <td>${bill.type}</td>
       <td>${bill.name}</td>
-      <td>${formatDate(bill.date)}</td>
+      <td data-testid="bill-date" data-bill-date="${bill.date}">${formatDate(
+        bill.date
+    )}</td>
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
       <td>
